@@ -1,4 +1,5 @@
 const Jwt  = require('@hapi/jwt');
+const {getAllUsers, createUser, getUserByEmail} = require('../helpers/userHelper')
 
 const verifyRegisterInput = (username, email, password, repeatPassword) => {
     var verification = {message: "Successful Validation", status: false};
@@ -9,7 +10,7 @@ const verifyRegisterInput = (username, email, password, repeatPassword) => {
     }
 
     //TODO: Connect to profile API and get all profiles
-    const accountList = getAllAccounts();
+    const accountList = getAllUsers();
     for(var account in accountList){
         //TODO: Probably check for upper/lowercase too
         if (account.username === username){
@@ -25,16 +26,11 @@ const verifyRegisterInput = (username, email, password, repeatPassword) => {
     return verification;
 }
 
-const createAccount = (username, email, password) => {
-    //TODO: Connect to profile API and create profile
-    return createProfile(username, email, password);
-}
-
 const verifyLoginCredential = (email, password) => {
     var verification = {message: "Wrong email or password", status: false};
 
     //TODO: Connect to profile API and get profile
-    const account = getAccountByEmail(email);
+    const account = getUserByEmail(email);
     if (account.keys(obj).length === 0){
         return verification;
     }

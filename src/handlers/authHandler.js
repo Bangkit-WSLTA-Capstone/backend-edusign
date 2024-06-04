@@ -1,4 +1,5 @@
-const {verifyRegisterInput, createAccount, verifyLoginCredential, generateToken} = require('../helpers/authHelper');
+const {verifyRegisterInput, verifyLoginCredential, generateToken} = require('../helpers/authHelper');
+const {createUser} = require('../helpers/userHelper')
 
 const registerHandler = async (request, h) => {
     const {username, email, password, repeatPassword} = request.payload;
@@ -13,7 +14,7 @@ const registerHandler = async (request, h) => {
     }
 
     // TODO: probably cut the helper middleman and just call the profile API?
-    const account = createAccount(username, email, password);
+    const account = createUser(username, email, password);
     const response = h.response({
         status: 'Success',
         message: `Your account is successfully registered`,
