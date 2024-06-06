@@ -62,4 +62,4 @@ const logoutHandler = async (request, h) => {
     return response;
 };
 
-module.exports = registerHandler, loginHandler, logoutHandler;
+module.exports = {registerHandler, loginHandler, logoutHandler};

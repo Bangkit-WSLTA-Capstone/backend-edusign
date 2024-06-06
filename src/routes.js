@@ -1,6 +1,6 @@
 // Import handlers here
 const {registerHandler, loginHandler, logoutHandler} = require('./handlers/authHandler');
-const {createUserHandler, getUserHandler, editUserHandler, deleteUserHandler} = require('./handlers/authHandler');
+const {createUserHandler, getUserHandler, editUserHandler, deleteUserHandler} = require('./handlers/userHandler');
 
 const routes = [
     {

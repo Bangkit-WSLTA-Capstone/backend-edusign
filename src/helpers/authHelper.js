@@ -1,5 +1,5 @@
 const Jwt  = require('@hapi/jwt');
-const {getAllUsers, createUser, getUserByEmail} = require('../helpers/userHelper')
+const {getAllUsers, getUserByEmail} = require('../helpers/userHelper')
 
 const verifyRegisterInput = (username, email, password, repeatPassword) => {
     var verification = {message: "Successful Validation", status: false};
@@ -61,4 +61,4 @@ const generateToken = (id, email) => {
     );    
 }
 
-module.exports = verifyRegisterInput, createAccount, verifyLoginCredential, generateToken;
+module.exports = verifyRegisterInput, verifyLoginCredential, generateToken;

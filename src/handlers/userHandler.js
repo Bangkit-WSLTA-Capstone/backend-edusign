@@ -81,4 +81,4 @@ const deleteUserHandler = async (request, h) => {
     return response;
 };
 
-module.exports = createUserHandler, getUserHandler, editUserHandler, deleteUserHandler;
+module.exports = {createUserHandler, getUserHandler, editUserHandler, deleteUserHandler};

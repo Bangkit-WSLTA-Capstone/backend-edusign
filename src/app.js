@@ -1,12 +1,13 @@
 const Hapi = require('@hapi/hapi');
 const routes = require('./routes');
+const Jwt  = require('@hapi/jwt');
 
 const init = async () => {
         const server = Hapi.server({
         port: 3000,
         host: 'localhost',
     });
-
+    /*
     // Setup JWT
     await server.register(Jwt);
 
@@ -35,7 +36,7 @@ const init = async () => {
 
     // Set the strategy
     server.auth.default('my_jwt_strategy');
-
+    */
     // Server/route options here
     server.realm.modifiers.route.prefix = '/api'
 
