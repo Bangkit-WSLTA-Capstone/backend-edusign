@@ -61,4 +61,4 @@ const generateToken = (id, email) => {
     );    
 }
 
-module.exports = verifyRegisterInput, verifyLoginCredential, generateToken;
+module.exports = {verifyRegisterInput, verifyLoginCredential, generateToken};
