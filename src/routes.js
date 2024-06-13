@@ -1,4 +1,3 @@
-// Import handlers here
 const {registerHandler, loginHandler, logoutHandler} = require('./handlers/authHandler');
 const {createUserHandler, getUserHandler, editUserHandler, deleteUserHandler} = require('./handlers/userHandler');
 
@@ -16,6 +15,9 @@ const routes = [
     {
         method: 'POST',
         path: '/login',
+        options: {
+            auth: false,
+        },
         handler: loginHandler,
     },
     {
@@ -26,12 +28,12 @@ const routes = [
     {
         method: 'GET',
         path: '/users/{id}',
-        handler: createUserHandler,
+        handler: getUserHandler,
     },
     {
         method: 'POST',
         path: '/users',
-        handler: getUserHandler,
+        handler: createUserHandler,
     },
     {
         method: 'PATCH',

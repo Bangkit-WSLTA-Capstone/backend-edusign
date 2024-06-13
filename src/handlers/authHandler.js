@@ -1,9 +1,11 @@
 const {verifyRegisterInput, verifyLoginCredential, generateToken} = require('../helpers/authHelper');
 const {createUser} = require('../helpers/userHelper')
+const bcrypt = require('bcrypt');
 
 const registerHandler = async (request, h) => {
+    let hashPassword;
     const {username, email, password, repeatPassword} = request.payload;
-    const verification = verifyRegisterInput(username, email, password, repeatPassword); 
+    const verification = await verifyRegisterInput(username, email, password, repeatPassword); 
     if (verification.status !== true){
         const response = h.response({
             status: 'Fail',
@@ -13,8 +15,10 @@ const registerHandler = async (request, h) => {
         return response;
     }
 
-    // TODO: probably cut the helper middleman and just call the profile API?
-    const account = createUser(username, email, password);
+    hashPassword = await bcrypt.hash(password, 12);
+
+    const account = await createUser(username, email, hashPassword);
+    console.log(account);
     const response = h.response({
         status: 'Success',
         message: `Your account is successfully registered`,
@@ -27,10 +31,9 @@ const registerHandler = async (request, h) => {
 };
 
 const loginHandler = async (request, h) => {
-    // TODO: perhaps implement login system with username too?
     const {email, password} = request.payload;
-    
-    const verification = verifyLoginCredential(email, password);
+    const verification = await verifyLoginCredential(email, password);
+
     if (verification.status !== true){
         const response = h.response({
             status: 'Fail',
@@ -39,8 +42,10 @@ const loginHandler = async (request, h) => {
         response.code(400);
         return response;
     }
-    
-    const jwtToken = generateToken(verification.id, verification.email);
+
+    const account = verification.account;
+    const jwtToken = generateToken(account.id, account.email, account.username);
+
     const response = h.response({
         status: 'Success',
         message: `You have been logged in`,

@@ -1,73 +1,49 @@
 const connection = require('../helpers/db');
+const util = require('util');
 
-const isValidCallback = (callback) => {
-  return callback && typeof callback === 'function';
-};
-
-const createUser = (username, email, password, callback) => {
+const createUser = async (username, email, password) => {
   const insertQuery = 'INSERT INTO USERS (USERNAME, EMAIL, PASSWORD) VALUES (?, ?, ?)';
-  connection.query(insertQuery, [username, email, password], (err, results) => {
-    if (err) {
-      if (isValidCallback(callback)) return callback(err);
-      throw new TypeError('callback is not a function');
-    }
-    if (isValidCallback(callback)) callback(null, results);
-  });
+  const getQuery = 'SELECT * FROM USERS WHERE EMAIL = ?';
+  const executeQuery = await util.promisify(connection.query).bind(connection);
+  await executeQuery(insertQuery, [username, email, password]);
+  const result = await executeQuery(getQuery, [email]);
+  return result[0];
 };
 
-const getUserByEmail = (email, callback) => {
+const getUserByEmail = async (email) => {
   const query = 'SELECT * FROM USERS WHERE EMAIL = ?';
-  connection.query(query, [email], (err, results) => {
-    if (err) {
-      if (isValidCallback(callback)) return callback(err);
-      throw new TypeError('callback is not a function');
-    }
-    if (isValidCallback(callback)) callback(null, results[0]);
-  });
+  const executeQuery = await util.promisify(connection.query).bind(connection);
+  const result = await executeQuery(query, [email]);
+  return result[0];
 };
 
-const getUserById = (id, callback) => {
+const getUserById = async (id) => {
   const query = 'SELECT * FROM USERS WHERE ID = ?';
-  connection.query(query, [id], (err, results) => {
-    if (err) {
-      if (isValidCallback(callback)) return callback(err);
-      throw new TypeError('callback is not a function');
-    }
-    if (isValidCallback(callback)) callback(null, results[0]);
-  });
+  const executeQuery = await util.promisify(connection.query).bind(connection);
+  const result = await executeQuery(query, [id]);
+  return result[0];
 };
 
-const getAllUsers = (callback) => {
+const getAllUsers = async () => {
   const query = 'SELECT * FROM USERS';
-  connection.query(query, (err, results) => {
-    if (err) {
-      if (isValidCallback(callback)) return callback(err);
-      throw new TypeError('callback is not a function');
-    }
-    if (isValidCallback(callback)) callback(null, results);
-  });
+  const executeQuery = await util.promisify(connection.query).bind(connection);
+  const result = await executeQuery(query);
+  return result;
 };
 
-const editUser = (id, username, email, password, callback) => {
+const editUser = async (id, username, email, password) => {
   const updateQuery = 'UPDATE USERS SET USERNAME = ?, EMAIL = ?, PASSWORD = ? WHERE ID = ?';
-  connection.query(updateQuery, [username, email, password, id], (err, results) => {
-    if (err) {
-      if (isValidCallback(callback)) return callback(err);
-      throw new TypeError('callback is not a function');
-    }
-    if (isValidCallback(callback)) callback(null, results);
-  });
+  const getQuery = 'SELECT * FROM USERS WHERE EMAIL = ?';
+  const executeQuery = await util.promisify(connection.query).bind(connection);
+  await executeQuery(updateQuery, [username, email, password, id]);
+  const result = await executeQuery(getQuery, [email]);
+  return result[0];
 };
 
-const deleteUser = (id, callback) => {
+const deleteUser = async (id) => {
   const query = 'DELETE FROM USERS WHERE ID = ?';
-  connection.query(query, [id], (err, results) => {
-    if (err) {
-      if (isValidCallback(callback)) return callback(err);
-      throw new TypeError('callback is not a function');
-    }
-    if (isValidCallback(callback)) callback(null, results);
-  });
+  const executeQuery = await util.promisify(connection.query).bind(connection);
+  await executeQuery(query, [id]);
 };
 
 module.exports = {

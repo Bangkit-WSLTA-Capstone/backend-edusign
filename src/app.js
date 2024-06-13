@@ -1,13 +1,15 @@
 const Hapi = require('@hapi/hapi');
 const routes = require('./routes');
 const Jwt  = require('@hapi/jwt');
+const { getUserById } = require('./helpers/userHelper');
+require('dotenv').config()
 
 const init = async () => {
         const server = Hapi.server({
         port: 3000,
         host: 'localhost',
     });
-    /*
+    
     // Setup JWT
     await server.register(Jwt);
 
@@ -27,6 +29,8 @@ const init = async () => {
             const userId = artifacts.decoded.payload.user.id;
 
             // TODO: Connect to profile API and get user credential + Check if user exists
+            const user = getUserById(userId);
+            if (user.Id === undefined) return {isValid: false};
             return {
                 isValid: true,
                 credentials: { user: artifacts.decoded.payload.user }
@@ -36,7 +40,7 @@ const init = async () => {
 
     // Set the strategy
     server.auth.default('my_jwt_strategy');
-    */
+    
     // Server/route options here
     server.realm.modifiers.route.prefix = '/api'
 

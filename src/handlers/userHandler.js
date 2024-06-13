@@ -1,9 +1,10 @@
-const {createUser, getUserById, getAllUsers, editUser, deleteUser} = require('../helpers/userHelper');
+const {createUser, getUserById, editUser, deleteUser} = require('../helpers/userHelper');
+const {verifyRegisterInput} = require('../helpers/authHelper');
+const bcrypt = require('bcrypt');
 
-// TODO: Increase security, e.g. prevent sql injection
 const getUserHandler = async (request, h) => {
     const id = request.params.id;
-    const account = getUserById(id);
+    const account = await getUserById(id);
 
     const response = h.response({
         status: 'Success',
@@ -16,12 +17,11 @@ const getUserHandler = async (request, h) => {
     return response;
 };
 
-
 const createUserHandler = async (request, h) => {
+    let hashPassword;
     const {username, email, password} = request.payload;
 
-    //TODO: Encrypt password & Handle input validation
-    const verification = "";
+    const verification = await verifyRegisterInput(username, email);
     if (verification.status !== true){
         const response = h.response({
             status: 'Fail',
@@ -31,7 +31,8 @@ const createUserHandler = async (request, h) => {
         return response;
     }
 
-    const account = createUser(username, email, password);
+    hashPassword = await bcrypt.hash(password, 12);
+    const account = await createUser(username, email, hashPassword);
     const response = h.response({
         status: 'Success',
         message: `Your account is successfully registered`,
@@ -44,6 +45,7 @@ const createUserHandler = async (request, h) => {
 };
 
 const editUserHandler = async (request, h) => {
+    let hashPassword;
     const {username, email, password} = request.payload;
 
     //TODO: Encrypt password & Handle input validation
@@ -57,7 +59,9 @@ const editUserHandler = async (request, h) => {
         return response;
     }
 
-    const account = editUser(username, email, password);
+    hashPassword = await bcrypt.hash(password, 12);
+
+    const account = await editUser(username, email, hashPassword);
     const response = h.response({
         status: 'Success',
         message: `Your account is successfully edited`,
@@ -72,7 +76,7 @@ const editUserHandler = async (request, h) => {
 const deleteUserHandler = async (request, h) => {
     const id = request.params.id;
     //TODO: logout user and blacklist jwt token
-    deleteUser(id);
+    await deleteUser(id);
     const response = h.response({
         status: 'Success',
         message: `Account successfuly deleted`,

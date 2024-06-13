@@ -1,22 +1,18 @@
 const Jwt  = require('@hapi/jwt');
+const bcrypt = require('bcrypt');
+require('dotenv').config()
+
 const {getAllUsers, getUserByEmail} = require('../helpers/userHelper')
 
-const verifyRegisterInput = (username, email, password, repeatPassword) => {
+const verifyRegisterInput = async (username, email) => {
     var verification = {message: "Successful Validation", status: false};
 
-    if(password !== repeatPassword){
-        verification.message == "Password and Repeat Password does not match up"
-        return verification;
-    }
-
-    //TODO: Connect to profile API and get all profiles
-    const accountList = getAllUsers();
-    for(var account in accountList){
-        //TODO: Probably check for upper/lowercase too
-        if (account.username === username){
+    const accountList = await getAllUsers();
+    for(var account of accountList){
+        if (account.Username.toLowerCase() === username.toLowerCase()){
             verification.message = "Username already taken";
             return verification;
-        } else if (account.email === email){
+        } else if (account.Email.toLowerCase() === email.toLowerCase()){
             verification.message = "Email already taken";
             return verification;
         }
@@ -26,30 +22,34 @@ const verifyRegisterInput = (username, email, password, repeatPassword) => {
     return verification;
 }
 
-const verifyLoginCredential = (email, password) => {
+const verifyLoginCredential = async (email, password) => {
     var verification = {message: "Wrong email or password", status: false};
 
-    //TODO: Connect to profile API and get profile
-    const account = getUserByEmail(email);
-    if (account.keys(obj).length === 0){
+    const account = await getUserByEmail(email);
+    if (account.Username === 0){
         return verification;
     }
-    if (account.password !== password){
+    
+    const differentPassword = await bcrypt.compare(password, account.Password);
+    if(!differentPassword){
         return verification;
-    }
+    } 
+
     verification.message = "Success";
     verification.status = true;
+    verification.account = account;
     return verification;
 }
 
-const generateToken = (id, email) => {
+const generateToken = (id, email, username) => {
     //TODO: Implement JWT generation & improve security
     return Jwt.token.generate(
         {
             aud: false,
             iss: false,
             id: id,
-            email: email
+            email: email,
+            username: username
         },
         {
             key: process.env.JWT_SECRET_KEY,
