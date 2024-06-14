@@ -1,0 +1,19 @@
+CREATE DATABASE EDUSIGN;
+USE EDUSIGN;
+
+CREATE TABLE USERS (
+    Id int NOT NULL AUTO_INCREMENT,
+    Email varchar(255) NOT NULL,
+    Username varchar(255) NOT NULL,
+    Password varchar(255) NOT NULL,
+    PRIMARY KEY (Id)
+);
+
+CREATE TABLE TRANSLATION_HISTORIES (
+    Id int NOT NULL AUTO_INCREMENT,
+    UserId int NOT NULL,
+    FileLink varchar(255) NOT NULL,
+    Result text NOT NULL,
+    PRIMARY KEY (Id),
+    FOREIGN KEY (UserId) REFERENCES USERS(Id) ON DELETE CASCADE
+);

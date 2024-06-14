@@ -1,4 +1,4 @@
-FROM node:18
+FROM node:20
 WORKDIR /src
 ENV HOST 0.0.0.0
 ENV PORT 3000

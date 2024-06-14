@@ -6,8 +6,8 @@ require('dotenv').config()
 
 const init = async () => {
         const server = Hapi.server({
-        port: 3000,
-        host: 'localhost',
+        port: process.env.PORT,
+        host: process.env.HOST,
     });
     
     // Setup JWT
@@ -25,15 +25,13 @@ const init = async () => {
             timeSkewSec: 15
         },
         //TODO: Probably refactor and move this somewhere else
-        validate: (artifacts, request, h) => {
-            const userId = artifacts.decoded.payload.user.id;
-
-            // TODO: Connect to profile API and get user credential + Check if user exists
-            const user = getUserById(userId);
+        validate: async (artifacts, request, h) => {
+            const userId = artifacts.decoded.payload.id;
+            const user = await getUserById(userId);
             if (user.Id === undefined) return {isValid: false};
             return {
                 isValid: true,
-                credentials: { user: artifacts.decoded.payload.user }
+                credentials: { user: artifacts.decoded.payload }
             };
         }
     });
