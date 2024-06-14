@@ -1,0 +1,21 @@
+steps:
+    # Build & push the container image
+    - name: "gcr.io/cloud-builders/docker"
+      entrypoint: gcloud
+      args: ["builds", "submit", "--tag", "asia-southeast2-docker.pkg.dev/${GOOGLE_CLOUD_PROJECT}/backend/edusign"]
+
+    # Deploy container image to Cloud Run
+    - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+
+      args:
+          - "run"
+          - "deploy"
+          - "edusign-backend"
+          - "--image"
+          - "asia-southeast2-docker.pkg.dev/${GOOGLE_CLOUD_PROJECT}/backend/edusign"
+          - "--region"
+          - "asia-southeast2"
+images:
+    - "asia-southeast2-docker.pkg.dev/${GOOGLE_CLOUD_PROJECT}/backend/edusign"
+options:
+  logging: CLOUD_LOGGING_ONLY

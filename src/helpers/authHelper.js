@@ -42,7 +42,6 @@ const verifyLoginCredential = async (email, password) => {
 }
 
 const generateToken = (id, email, username) => {
-    //TODO: Implement JWT generation & improve security
     return Jwt.token.generate(
         {
             aud: false,
