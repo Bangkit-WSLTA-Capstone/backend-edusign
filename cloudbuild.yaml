@@ -1,5 +1,5 @@
 steps:
-    - name: "Enable artifactregistry"
+    - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
       entrypoint: gcloud
       args: 
           - "services"
@@ -9,7 +9,7 @@ steps:
           - "run.googleapis.com"
 
     # Build & push the container image
-    - name: "gcr.io/cloud-builders/docker"
+    - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
       entrypoint: gcloud
       args: 
           - "builds"
