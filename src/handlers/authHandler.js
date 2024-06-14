@@ -44,7 +44,7 @@ const loginHandler = async (request, h) => {
     }
 
     const account = verification.account;
-    const jwtToken = generateToken(account.id, account.email, account.username);
+    const jwtToken = generateToken(account.Id, account.Email, account.Username);
 
     const response = h.response({
         status: 'Success',
