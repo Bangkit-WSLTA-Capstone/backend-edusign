@@ -1,21 +1,34 @@
 steps:
+    - name: "Enable artifactregistry"
+      entrypoint: gcloud
+      args: 
+          - "services"
+          - "enable"
+          - "artifactregistry.googleapis.com"
+          - "cloudbuild.googleapis.com"
+          - "run.googleapis.com"
+
     # Build & push the container image
     - name: "gcr.io/cloud-builders/docker"
       entrypoint: gcloud
-      args: ["builds", "submit", "--tag", "asia-southeast2-docker.pkg.dev/${PROJECT_ID}/backend/edusign"]
+      args: 
+          - "builds"
+          - "submit"
+          - "--tag" 
+          - "asia-southeast2-docker.pkg.dev/${PROJECT_ID}/backend/edusign:${SHORT_SHA}"
 
     # Deploy container image to Cloud Run
     - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
-
+      entrypoint: gcloud
       args:
           - "run"
           - "deploy"
           - "edusign-backend"
           - "--image"
-          - "asia-southeast2-docker.pkg.dev/${PROJECT_ID}/backend/edusign"
+          - "asia-southeast2-docker.pkg.dev/${PROJECT_ID}/backend/edusign:${SHORT_SHA}"
           - "--region"
           - "asia-southeast2"
 images:
-    - "asia-southeast2-docker.pkg.dev/${PROJECT_ID}/backend/edusign"
+    - "asia-southeast2-docker.pkg.dev/${PROJECT_ID}/backend/edusign:${SHORT_SHA}"
 options:
   logging: CLOUD_LOGGING_ONLY
