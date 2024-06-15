@@ -4,11 +4,9 @@ const translateHandler = async (request, h) => {
     const { payload } = request;
     const { file } = payload;
 
-    // Hardcoded response for now
-    const result = 'Dummy result'; // This should come from the translate function
-    const link = 'http://dummy-link.com'; // This should come from the uploadVideo function
+    const result = 'Dummy result';
+    const link = 'http://dummy-link.com';
 
-    // Hardcoded history object for now
     const history = {
         id: 'some-random-id',
         userId: 1,
