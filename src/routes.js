@@ -1,5 +1,6 @@
 const {registerHandler, loginHandler, logoutHandler} = require('./handlers/authHandler');
 const {createUserHandler, getUserHandler, editUserHandler, deleteUserHandler} = require('./handlers/userHandler');
+const {translateHandler} = require('./handlers/translateHandler');
 
 const routes = [
     {
@@ -76,4 +77,20 @@ const routes = [
     },
 ];
 
-module.exports = routes;
+const translateRoutes = [
+    {
+        method: 'POST',
+        path: '/api/translate',
+        handler: translateHandler,
+        options: {
+            payload: {
+                parse: true,
+                multipart: true,
+                output: 'data',
+                maxBytes: 10485760, // 10 MB
+            },
+        },
+    }
+];
+
+module.exports = {routes, translateRoutes};

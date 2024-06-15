@@ -1,5 +1,5 @@
 FROM node:20
-WORKDIR /src
+WORKDIR /app
 ENV HOST 0.0.0.0
 ENV PORT 3000
 COPY . .
