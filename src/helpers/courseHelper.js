@@ -6,7 +6,8 @@ const getCourseLink = async (fileName) => {
     const query = 'SELECT * FROM COURSES WHERE COURSENAME = ?';
     const executeQuery = await util.promisify(connection.query).bind(connection);
     const queryResult = await executeQuery(query, [fileName]);
-    return queryResult[0].filelink;
+    console.log(queryResult);
+    return queryResult[0].FileLink;
 }
 
 const getCourseContent = async (fileName) => {
@@ -16,10 +17,10 @@ const getCourseContent = async (fileName) => {
 };
 
 const getDictionary = async (letter) => {
-    const query = 'SELECT * FROM LETTER_DICTIONARY WHERE USERID = ?';
+    const query = 'SELECT * FROM LETTER_DICTIONARY WHERE LETTER = ?';
     const executeQuery = await util.promisify(connection.query).bind(connection);
     const result = await executeQuery(query, [letter]);
-    return result;
+    return result[0];
 }
 
 module.exports = { getCourseContent, getDictionary };
