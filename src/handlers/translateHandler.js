@@ -4,9 +4,9 @@ const translateHandler = async (request, h) => {
     const user = request.auth.credentials.user
     const video = request.payload.video;
 
-    const result = 'Dummy result';
     const link = await uploadVideo(video, user.id);
-
+    const result = await translate(link);
+    
     const history = {
         id: 100,
         userId: user.Id,

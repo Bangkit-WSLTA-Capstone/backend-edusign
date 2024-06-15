@@ -24,10 +24,10 @@ const uploadVideo = async (videoStream, userId) => {
 
 const translate = async (link) => {
     try {
-        const response = await axios.post(process.env.ML_API_URL, link, {
+        const response = await axios.post(process.env.ML_API_URL, {link: link}, {
             headers: {
                 'Content-Type': 'application/json'
-            }
+            },
         });
         return response.data;
     } catch (error) {
