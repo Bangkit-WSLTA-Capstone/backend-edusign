@@ -2,6 +2,7 @@ const connection = require('./db');
 const axios = require('axios');
 const {format} = require('date-fns');
 const bucket = require('./bucket')
+const util = require('util');
 
 const uploadVideo = async (videoStream, userId) => {
     const formattedDate = format(new Date(), 'yyyyMMdd-HHmmss');
@@ -35,13 +36,21 @@ const translate = async (link) => {
         return 'Failed to fetch data';
     }
 };
+
 const createHistory = async (userId, link, result) => {
     const insertQuery = 'INSERT INTO TRANSLATION_HISTORIES (USERID, FILELINK, RESULT) VALUES (?, ?, ?)';
-    const getQuery = 'SELECT * FROM TRANSLATION_HISTORIES WHERE LINK = ?';
+    const getQuery = 'SELECT * FROM TRANSLATION_HISTORIES WHERE FILELINK = ?';
     const executeQuery = await util.promisify(connection.query).bind(connection);
     await executeQuery(insertQuery, [userId, link, result]);
     const queryResult = await executeQuery(getQuery, [link]);
     return queryResult[0];
 };
 
-module.exports = { uploadVideo, createHistory, translate };
+const getTranslationHistoriesById = async (userId) => {
+    const query = 'SELECT * FROM TRANSLATION_HISTORIES WHERE USERID = ?';
+    const executeQuery = await util.promisify(connection.query).bind(connection);
+    const result = await executeQuery(query, [userId]);
+    return result;
+}
+
+module.exports = { uploadVideo, createHistory, translate, getTranslationHistoriesById };

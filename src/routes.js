@@ -1,6 +1,6 @@
 const {registerHandler, loginHandler, logoutHandler} = require('./handlers/authHandler');
 const {createUserHandler, getUserHandler, editUserHandler, deleteUserHandler} = require('./handlers/userHandler');
-const {translateHandler} = require('./handlers/translateHandler');
+const {translateHandler, getTranslationHandler} = require('./handlers/translateHandler');
 
 const routes = [
     {
@@ -88,6 +88,14 @@ const routes = [
             },
         },
         handler: translateHandler,
+    },
+    {
+        method: 'GET',
+        path: '/translate',
+        options: {
+            auth: 'my_jwt_strategy',
+        },
+        handler: getTranslationHandler,
     }
 ];
 

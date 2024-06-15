@@ -1,23 +1,35 @@
-const { uploadVideo, createHistory, translate } = require('../helpers/translateHelper');
+const { uploadVideo, createHistory, translate, getTranslationHistoriesById } = require('../helpers/translateHelper');
 
 const translateHandler = async (request, h) => {
     const user = request.auth.credentials.user
     const video = request.payload.video;
-
-    const link = await uploadVideo(video, user.id);
-    const result = await translate(link);
+    try {
+        const link = await uploadVideo(video, user.id);
+        const result = await translate(link);
+        const history = await createHistory(user.id, link, result.result);
     
-    const history = {
-        id: 100,
-        userId: user.Id,
-        fileLink: link,
-        result: result
-    };
-
-    return h.response({
-        status: 'success',
-        data: history
-    }).code(200);
+        return h.response({
+            status: true,
+            message: 'Video translated successfully',
+            data: history
+        }).code(200);        
+    } catch (error) {
+        return h.response({
+            status: false,
+            message: error.message,
+        }).code(500);   
+    }
 };
 
-module.exports = { translateHandler };
+const getTranslationHandler = async (request, h) => {
+    const user = request.auth.credentials.user
+    const historyList = await getTranslationHistoriesById(user.id);
+
+    return h.response({
+        status: true,
+        message: 'Translation history fetched successfully',
+        data: historyList
+    }).code(200);        
+};
+
+module.exports = { translateHandler, getTranslationHandler };
