@@ -1,5 +1,6 @@
 const {registerHandler, loginHandler, logoutHandler} = require('./handlers/authHandler');
 const {createUserHandler, getUserHandler, editUserHandler, deleteUserHandler} = require('./handlers/userHandler');
+const {translateHandler, getTranslationHandler} = require('./handlers/translateHandler');
 
 const routes = [
     {
@@ -38,7 +39,7 @@ const routes = [
         method: 'POST',
         path: '/logout',
         options: {
-            auth: false,
+            auth: 'my_jwt_strategy',
         },
         handler: logoutHandler,
     },
@@ -74,6 +75,28 @@ const routes = [
         },
         handler: deleteUserHandler,
     },
+    {
+        method: 'POST',
+        path: '/translate',
+        options: {
+            auth: 'my_jwt_strategy',
+            payload: {
+                parse: true,
+                multipart: true,
+                output: 'stream',
+                maxBytes: 52428800, // 50 MB
+            },
+        },
+        handler: translateHandler,
+    },
+    {
+        method: 'GET',
+        path: '/translate',
+        options: {
+            auth: 'my_jwt_strategy',
+        },
+        handler: getTranslationHandler,
+    }
 ];
 
 module.exports = routes;
