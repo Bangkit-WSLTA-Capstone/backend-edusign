@@ -39,7 +39,7 @@ const routes = [
         method: 'POST',
         path: '/logout',
         options: {
-            auth: false,
+            auth: 'my_jwt_strategy',
         },
         handler: logoutHandler,
     },
@@ -75,22 +75,20 @@ const routes = [
         },
         handler: deleteUserHandler,
     },
-];
-
-const translateRoutes = [
     {
         method: 'POST',
-        path: '/api/translate',
-        handler: translateHandler,
+        path: '/translate',
         options: {
+            auth: 'my_jwt_strategy',
             payload: {
                 parse: true,
                 multipart: true,
-                output: 'data',
-                maxBytes: 10485760, // 10 MB
+                output: 'stream',
+                maxBytes: 52428800, // 50 MB
             },
         },
+        handler: translateHandler,
     }
 ];
 
-module.exports = {routes, translateRoutes};
+module.exports = routes;

@@ -1,15 +1,15 @@
 const { uploadVideo, createHistory, translate } = require('../helpers/translateHelper');
 
 const translateHandler = async (request, h) => {
-    const { payload } = request;
-    const { file } = payload;
+    const user = request.auth.credentials.user
+    const video = request.payload.video;
 
     const result = 'Dummy result';
-    const link = 'http://dummy-link.com';
+    const link = await uploadVideo(video, user.id);
 
     const history = {
-        id: 'some-random-id',
-        userId: 1,
+        id: 100,
+        userId: user.Id,
         fileLink: link,
         result: result
     };
