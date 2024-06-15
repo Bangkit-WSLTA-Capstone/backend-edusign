@@ -1,6 +1,8 @@
 const {registerHandler, loginHandler, logoutHandler} = require('./handlers/authHandler');
 const {createUserHandler, getUserHandler, editUserHandler, deleteUserHandler} = require('./handlers/userHandler');
 const {translateHandler, getTranslationHandler} = require('./handlers/translateHandler');
+const {getCourseHandler, getDictionaryHandler} = require('./handlers/courseHandler');
+
 
 const routes = [
     {
@@ -96,6 +98,22 @@ const routes = [
             auth: 'my_jwt_strategy',
         },
         handler: getTranslationHandler,
+    },
+    {
+        method: 'GET',
+        path: '/course/{fileName}',
+        options: {
+            auth: false,
+        },
+        handler: getCourseHandler,
+    },
+    {
+        method: 'GET',
+        path: '/dictionary/{letter}',
+        options: {
+            auth: false,
+        },
+        handler: getDictionaryHandler,
     }
 ];
 
