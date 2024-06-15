@@ -8,7 +8,7 @@ const registerHandler = async (request, h) => {
     const verification = await verifyRegisterInput(username, email, password, repeatPassword); 
     if (verification.status !== true){
         const response = h.response({
-            status: 'Fail',
+            status: true,
             message: verification.message,
         });
         response.code(400);
@@ -20,7 +20,7 @@ const registerHandler = async (request, h) => {
     const account = await createUser(username, email, hashPassword);
     console.log(account);
     const response = h.response({
-        status: 'Success',
+        status: true,
         message: `Your account is successfully registered`,
         data: {
             account: account
@@ -36,7 +36,7 @@ const loginHandler = async (request, h) => {
 
     if (verification.status !== true){
         const response = h.response({
-            status: 'Fail',
+            status: false,
             message: verification.message,
         });
         response.code(400);
@@ -47,7 +47,7 @@ const loginHandler = async (request, h) => {
     const jwtToken = generateToken(account.Id, account.Email, account.Username);
 
     const response = h.response({
-        status: 'Success',
+        status: true,
         message: `You have been logged in`,
         data: {
             token: jwtToken
@@ -60,7 +60,7 @@ const loginHandler = async (request, h) => {
 const logoutHandler = async (request, h) => {
     //TODO: Implement more logic, perhaps blacklist the token? 
     const response = h.response({
-        status: 'Success',
+        status: true,
         message: `You have been logged out`,
     });
     response.code(200);

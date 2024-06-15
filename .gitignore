@@ -35,4 +35,6 @@ node_modules/
 # Stores VSCode versions used for testing VSCode extensions
 .vscode-test
 
+bucket-credentials.json
+
 # Credits to https://github.com/github/gitignore/blob/main/Node.gitignore
