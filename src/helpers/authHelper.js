@@ -41,23 +41,42 @@ const verifyLoginCredential = async (email, password) => {
     return verification;
 }
 
-const generateToken = (id, email, username) => {
+const generateAccessToken = (id, email, username) => {
     return Jwt.token.generate(
         {
             aud: false,
             iss: false,
             id: id,
             email: email,
-            username: username
+            username: username,
+            type: 'access'
         },
         {
             key: process.env.JWT_SECRET_KEY,
             algorithm: 'HS512'
         },
         {
-            ttlSec: 14400
+            ttlSec: 300
         }
     );    
 }
 
-module.exports = {verifyRegisterInput, verifyLoginCredential, generateToken};
+const generateRefreshToken = (id) => {
+    return Jwt.token.generate(
+        {
+            aud: false,
+            iss: false,
+            id: id,
+            type: 'refresh'
+        },
+        {
+            key: process.env.JWT_SECRET_KEY,
+            algorithm: 'HS512'
+        },
+        {
+            ttlSec: 604800
+        }
+    );    
+}
+
+module.exports = {verifyRegisterInput, verifyLoginCredential, generateAccessToken, generateRefreshToken};

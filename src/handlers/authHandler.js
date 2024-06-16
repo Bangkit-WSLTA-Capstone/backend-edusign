@@ -1,5 +1,5 @@
-const {verifyRegisterInput, verifyLoginCredential, generateToken} = require('../helpers/authHelper');
-const {createUser} = require('../helpers/userHelper')
+const {verifyRegisterInput, verifyLoginCredential, generateAccessToken, generateRefreshToken} = require('../helpers/authHelper');
+const {createUser, getUserById} = require('../helpers/userHelper')
 const bcrypt = require('bcrypt');
 
 const registerHandler = async (request, h) => {
@@ -22,9 +22,7 @@ const registerHandler = async (request, h) => {
     const response = h.response({
         status: true,
         message: `Your account is successfully registered`,
-        data: {
-            account: account
-        }
+        data: account
     });
     response.code(200);
     return response;
@@ -44,13 +42,15 @@ const loginHandler = async (request, h) => {
     }
 
     const account = verification.account;
-    const jwtToken = generateToken(account.id, account.email, account.username);
+    const accessToken = generateAccessToken(account.id, account.email, account.username);
+    const refreshToken = generateRefreshToken(account.id)
 
     const response = h.response({
         status: true,
         message: `You have been logged in`,
         data: {
-            token: jwtToken
+            access: accessToken,
+            refresh: refreshToken
         }
     });
     response.code(200);
@@ -67,4 +67,25 @@ const logoutHandler = async (request, h) => {
     return response;
 };
 
-module.exports = {registerHandler, loginHandler, logoutHandler};
+const refreshHandler = async (request, h) => {
+    if (request.auth.tokenType != 'refresh'){
+        const response = h.response({
+            status: false,
+            message: `Wrong token type`,
+        });
+        response.code(403);
+        return response;
+    }
+    const userId = request.auth.credentials.user.id;
+    const user = getUserById(userId);
+    const accessToken = generateAccessToken(user.id, user.email, user.username);
+    const response = h.response({
+        status: true,
+        message: `New access token successfully generated`,
+        data: accessToken
+    });
+    response.code(200);
+    return response;
+}
+
+module.exports = {registerHandler, loginHandler, logoutHandler, refreshHandler};
