@@ -2,20 +2,20 @@ CREATE DATABASE EDUSIGN;
 USE EDUSIGN;
 
 CREATE TABLE USERS (
-    Id int NOT NULL AUTO_INCREMENT,
-    Email varchar(255) NOT NULL,
-    Username varchar(255) NOT NULL,
-    Password varchar(255) NOT NULL,
+    id int NOT NULL AUTO_INCREMENT,
+    email varchar(255) NOT NULL,
+    username varchar(255) NOT NULL,
+    password varchar(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (Id)
 );
 
 CREATE TABLE TRANSLATION_HISTORIES (
-    Id int NOT NULL AUTO_INCREMENT,
-    UserId int NOT NULL,
-    FileLink varchar(255) NOT NULL,
-    Result text NOT NULL,
+    id int NOT NULL AUTO_INCREMENT,
+    userid int NOT NULL,
+    filelink varchar(255) NOT NULL,
+    result text NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (Id),
@@ -23,18 +23,18 @@ CREATE TABLE TRANSLATION_HISTORIES (
 );
 
 CREATE TABLE COURSES (
-    Id int NOT NULL AUTO_INCREMENT,
-    CourseName varchar(255) NOT NULL,
-    FileLink varchar(255) NOT NULL,
+    id int NOT NULL AUTO_INCREMENT,
+    coursename varchar(255) NOT NULL,
+    filelink varchar(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (Id)
 );
 
 CREATE TABLE LETTER_DICTIONARY (
-    Id int NOT NULL AUTO_INCREMENT,
-    Letter varchar(255) NOT NULL,
-    FileLink varchar(255) NOT NULL,
+    id int NOT NULL AUTO_INCREMENT,
+    letter varchar(255) NOT NULL,
+    filelink varchar(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (Id)

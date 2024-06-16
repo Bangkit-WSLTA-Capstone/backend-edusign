@@ -4,8 +4,8 @@ const bcrypt = require('bcrypt');
 
 const registerHandler = async (request, h) => {
     let hashPassword;
-    const {username, email, password, repeatPassword} = request.payload;
-    const verification = await verifyRegisterInput(username, email, password, repeatPassword); 
+    const {username, email, password} = request.payload;
+    const verification = await verifyRegisterInput(username, email, password); 
     if (verification.status !== true){
         const response = h.response({
             status: true,
@@ -44,7 +44,7 @@ const loginHandler = async (request, h) => {
     }
 
     const account = verification.account;
-    const jwtToken = generateToken(account.Id, account.Email, account.Username);
+    const jwtToken = generateToken(account.id, account.email, account.username);
 
     const response = h.response({
         status: true,

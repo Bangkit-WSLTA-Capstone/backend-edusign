@@ -9,10 +9,10 @@ const verifyRegisterInput = async (username, email) => {
 
     const accountList = await getAllUsers();
     for(var account of accountList){
-        if (account.Username.toLowerCase() === username.toLowerCase()){
+        if (account.username.toLowerCase() === username.toLowerCase()){
             verification.message = "Username already taken";
             return verification;
-        } else if (account.Email.toLowerCase() === email.toLowerCase()){
+        } else if (account.email.toLowerCase() === email.toLowerCase()){
             verification.message = "Email already taken";
             return verification;
         }
@@ -26,11 +26,11 @@ const verifyLoginCredential = async (email, password) => {
     var verification = {message: "Wrong email or password", status: false};
 
     const account = await getUserByEmail(email);
-    if (account.Username === 0){
+    if (account.username === 0){
         return verification;
     }
     
-    const differentPassword = await bcrypt.compare(password, account.Password);
+    const differentPassword = await bcrypt.compare(password, account.password);
     if(!differentPassword){
         return verification;
     } 
