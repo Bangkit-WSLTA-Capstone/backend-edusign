@@ -6,7 +6,6 @@ const getCourseLink = async (fileName) => {
     const query = 'SELECT * FROM COURSES WHERE COURSENAME = ?';
     const executeQuery = await util.promisify(connection.query).bind(connection);
     const queryResult = await executeQuery(query, [fileName]);
-    console.log(queryResult);
     return queryResult[0].filelink;
 }
 
