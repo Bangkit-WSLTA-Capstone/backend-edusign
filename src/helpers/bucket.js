@@ -1,7 +1,8 @@
 const {Storage} = require('@google-cloud/storage');
 const path = require('path');
+require('dotenv').config();
 
-const pathKey = path.resolve('./bucket-credentials.json');
+const pathKey =  process.env.ENVIRONMENT == "production" ? __dirname + '/bucket-credentials.json' : path.resolve('./bucket-credentials.json');
 
 const gcs = new Storage({
     projectId: process.env.PROJECT_ID,

@@ -16,6 +16,13 @@ const getCourseContent = async (fileName) => {
     return response.data;
 };
 
+const getAllCourses = async () => {
+    const query = 'SELECT * FROM COURSES';
+    const executeQuery = await util.promisify(connection.query).bind(connection);
+    const result = await executeQuery(query);
+    return result;
+};
+
 const getDictionary = async (letter) => {
     const query = 'SELECT * FROM LETTER_DICTIONARY WHERE LETTER = ?';
     const executeQuery = await util.promisify(connection.query).bind(connection);
@@ -23,4 +30,4 @@ const getDictionary = async (letter) => {
     return result[0];
 }
 
-module.exports = { getCourseContent, getDictionary };
+module.exports = { getCourseContent, getDictionary, getAllCourses };

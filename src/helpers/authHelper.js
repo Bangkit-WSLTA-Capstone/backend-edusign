@@ -9,10 +9,10 @@ const verifyRegisterInput = async (username, email) => {
 
     const accountList = await getAllUsers();
     for(var account of accountList){
-        if (account.Username.toLowerCase() === username.toLowerCase()){
+        if (account.username.toLowerCase() === username.toLowerCase()){
             verification.message = "Username already taken";
             return verification;
-        } else if (account.Email.toLowerCase() === email.toLowerCase()){
+        } else if (account.email.toLowerCase() === email.toLowerCase()){
             verification.message = "Email already taken";
             return verification;
         }
@@ -26,11 +26,11 @@ const verifyLoginCredential = async (email, password) => {
     var verification = {message: "Wrong email or password", status: false};
 
     const account = await getUserByEmail(email);
-    if (account.Username === 0){
+    if (account.username === 0){
         return verification;
     }
     
-    const differentPassword = await bcrypt.compare(password, account.Password);
+    const differentPassword = await bcrypt.compare(password, account.password);
     if(!differentPassword){
         return verification;
     } 
@@ -41,23 +41,42 @@ const verifyLoginCredential = async (email, password) => {
     return verification;
 }
 
-const generateToken = (id, email, username) => {
+const generateAccessToken = (id, email, username) => {
     return Jwt.token.generate(
         {
             aud: false,
             iss: false,
             id: id,
             email: email,
-            username: username
+            username: username,
+            type: 'access'
         },
         {
             key: process.env.JWT_SECRET_KEY,
             algorithm: 'HS512'
         },
         {
-            ttlSec: 14400
+            ttlSec: 300
         }
     );    
 }
 
-module.exports = {verifyRegisterInput, verifyLoginCredential, generateToken};
+const generateRefreshToken = (id) => {
+    return Jwt.token.generate(
+        {
+            aud: false,
+            iss: false,
+            id: id,
+            type: 'refresh'
+        },
+        {
+            key: process.env.JWT_SECRET_KEY,
+            algorithm: 'HS512'
+        },
+        {
+            ttlSec: 604800
+        }
+    );    
+}
+
+module.exports = {verifyRegisterInput, verifyLoginCredential, generateAccessToken, generateRefreshToken};

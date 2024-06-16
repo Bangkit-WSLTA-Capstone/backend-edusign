@@ -1,7 +1,7 @@
 const {registerHandler, loginHandler, logoutHandler} = require('./handlers/authHandler');
 const {createUserHandler, getUserHandler, editUserHandler, deleteUserHandler} = require('./handlers/userHandler');
 const {translateHandler, getTranslationHandler} = require('./handlers/translateHandler');
-const {getCourseHandler, getDictionaryHandler} = require('./handlers/courseHandler');
+const {getCourseHandler, getDictionaryHandler, getAllCourseHandler} = require('./handlers/courseHandler');
 
 
 const routes = [
@@ -106,6 +106,14 @@ const routes = [
             auth: false,
         },
         handler: getCourseHandler,
+    },
+    {
+        method: 'GET',
+        path: '/course',
+        options: {
+            auth: false,
+        },
+        handler: getAllCourseHandler,
     },
     {
         method: 'GET',
