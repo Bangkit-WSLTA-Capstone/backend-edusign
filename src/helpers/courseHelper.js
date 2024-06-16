@@ -7,7 +7,7 @@ const getCourseLink = async (fileName) => {
     const executeQuery = await util.promisify(connection.query).bind(connection);
     const queryResult = await executeQuery(query, [fileName]);
     console.log(queryResult);
-    return queryResult[0].FileLink;
+    return queryResult[0].filelink;
 }
 
 const getCourseContent = async (fileName) => {

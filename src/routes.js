@@ -1,4 +1,4 @@
-const {registerHandler, loginHandler, logoutHandler} = require('./handlers/authHandler');
+const {registerHandler, loginHandler, logoutHandler, refreshHandler} = require('./handlers/authHandler');
 const {createUserHandler, getUserHandler, editUserHandler, deleteUserHandler} = require('./handlers/userHandler');
 const {translateHandler, getTranslationHandler} = require('./handlers/translateHandler');
 const {getCourseHandler, getDictionaryHandler, getAllCourseHandler} = require('./handlers/courseHandler');
@@ -44,6 +44,14 @@ const routes = [
             auth: 'my_jwt_strategy',
         },
         handler: logoutHandler,
+    },
+    {
+        method: 'POST',
+        path: '/refresh',
+        options: {
+            auth: 'my_jwt_strategy',
+        },
+        handler: refreshHandler,
     },
     {
         method: 'GET',
