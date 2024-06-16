@@ -28,10 +28,10 @@ const init = async () => {
         validate: async (artifacts, request, h) => {
             const userId = artifacts.decoded.payload.id;
             const user = await getUserById(userId);
-            if (user.Id === undefined) return {isValid: false};
+            if (user.id === undefined) return {isValid: false};
             return {
                 isValid: true,
-                credentials: { user: artifacts.decoded.payload }
+                credentials: { user: artifacts.decoded.payload, type: artifacts.decoded.payload.type }
             };
         }
     });
