@@ -18,7 +18,6 @@ const registerHandler = async (request, h) => {
     hashPassword = await bcrypt.hash(password, 12);
 
     const account = await createUser(username, email, hashPassword);
-    console.log(account);
     const response = h.response({
         status: true,
         message: `Your account is successfully registered`,
@@ -68,7 +67,7 @@ const logoutHandler = async (request, h) => {
 };
 
 const refreshHandler = async (request, h) => {
-    if (request.auth.tokenType != 'refresh'){
+    if (request.auth.credentials.user.type !== 'refresh'){
         const response = h.response({
             status: false,
             message: `Wrong token type`,
@@ -77,7 +76,7 @@ const refreshHandler = async (request, h) => {
         return response;
     }
     const userId = request.auth.credentials.user.id;
-    const user = getUserById(userId);
+    const user = await getUserById(userId);
     const accessToken = generateAccessToken(user.id, user.email, user.username);
     const response = h.response({
         status: true,

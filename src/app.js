@@ -31,7 +31,7 @@ const init = async () => {
             if (user.id === undefined) return {isValid: false};
             return {
                 isValid: true,
-                credentials: { user: artifacts.decoded.payload, type: artifacts.decoded.payload.type }
+                credentials: { user: artifacts.decoded.payload }
             };
         }
     });
