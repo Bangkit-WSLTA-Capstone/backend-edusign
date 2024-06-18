@@ -37,6 +37,7 @@ const registerHandler = async (request, h) => {
 
         const hashPassword = await bcrypt.hash(password, 12);
         const account = await createUser(username, email, hashPassword);
+        delete account.password;
 
         const response = h.response({
             status: true,
