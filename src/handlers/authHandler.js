@@ -125,16 +125,45 @@ const logoutHandler = async (request, h) => {
 };
 
 const refreshHandler = async (request, h) => {
+    if (!request.auth.credentials){
+        return h.response({
+            status: false,
+            message: `Wrong credentials`,
+        }).code(401);
+    }
+
+    if (!request.auth.user){
+        return h.response({
+            status: false,
+            message: `Wrong credentials`,
+        }).code(401);
+    }
+
+    if (!request.auth.user.access){
+        return h.response({
+            status: false,
+            message: `Wrong credentials`,
+        }).code(401);
+    }
+
     if (request.auth.credentials.user.type !== 'refresh'){
         const response = h.response({
             status: false,
             message: `Wrong token type`,
         });
-        response.code(403);
+        response.code(401);
         return response;
     }
     const userId = request.auth.credentials.user.id;
     const user = await getUserById(userId);
+    
+    if (user === undefined){
+        return h.response({
+            status: false,
+            message: `User not found`,
+        }).code(400);
+    }
+    
     const accessToken = generateAccessToken(user.id, user.email, user.username);
     const response = h.response({
         status: true,
