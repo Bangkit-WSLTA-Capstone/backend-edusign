@@ -17,7 +17,7 @@ const getCourseHandler = async (request, h) => {
     } catch (error) {
         return h.response({
             status: false,
-            message: 'Internal Server Error',
+            message: `Internal Server Error: ${error.message}`,
         }).code(500);
     }
 };
@@ -33,7 +33,7 @@ const getAllCourseHandler = async (request, h) => {
     } catch (error) {
         return h.response({
             status: false,
-            message: 'Internal Server Error',
+            message: `Internal Server Error: ${error.message}`,
         }).code(500);
     }
 }
@@ -68,7 +68,7 @@ const getDictionaryHandler = async (request, h) => {
     } catch (error) {
         return h.response({
             status: false,
-            message: 'Internal Server Error',
+            message: `Internal Server Error: ${error.message}`,
         }).code(500);
     }
 };

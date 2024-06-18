@@ -49,7 +49,7 @@ const registerHandler = async (request, h) => {
         // Jika terjadi kesalahan yang tidak terduga
         const response = h.response({
             status: false,
-            message: 'Internal Server Error',
+            message: `Internal Server Error: ${error.message}`,
         });
         response.code(500);
         return response;
@@ -107,7 +107,7 @@ const loginHandler = async (request, h) => {
         // Jika terjadi kesalahan yang tidak terduga
         const response = h.response({
             status: false,
-            message: 'Internal Server Error',
+            message: `Internal Server Error: ${error.message}`,
         });
         response.code(500);
         return response;
@@ -125,6 +125,7 @@ const logoutHandler = async (request, h) => {
 };
 
 const refreshHandler = async (request, h) => {
+    try{
     if (!request.auth.credentials){
         return h.response({
             status: false,
@@ -172,6 +173,14 @@ const refreshHandler = async (request, h) => {
     });
     response.code(200);
     return response;
+    } catch (error) {
+        const response = h.response({
+            status: false,
+            message: `Internal Server Error: ${error.message}`,
+        });
+        response.code(500);
+        return response;
+    }
 }
 
 module.exports = {registerHandler, loginHandler, logoutHandler, refreshHandler};
