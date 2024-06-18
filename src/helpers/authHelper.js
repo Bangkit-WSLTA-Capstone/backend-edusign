@@ -26,7 +26,7 @@ const verifyLoginCredential = async (email, password) => {
     var verification = {message: "Wrong email or password", status: false};
 
     const account = await getUserByEmail(email);
-    if (account.username === 0){
+    if (account === undefined){
         return verification;
     }
     

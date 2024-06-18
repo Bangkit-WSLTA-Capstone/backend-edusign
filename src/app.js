@@ -5,7 +5,7 @@ const { getUserById } = require('./helpers/userHelper');
 require('dotenv').config()
 
 const init = async () => {
-        const server = Hapi.server({
+    const server = Hapi.server({
         port: process.env.PORT || 3000,
         host: `${process.env.HOST}` || '0.0.0.0',
     });
@@ -20,9 +20,7 @@ const init = async () => {
             iss: false,
             sub: false,
             nbf: true,
-            exp: true,
-            maxAgeSec: 14400,
-            timeSkewSec: 15
+            exp: true
         },
         //TODO: Probably refactor and move this somewhere else
         validate: async (artifacts, request, h) => {
