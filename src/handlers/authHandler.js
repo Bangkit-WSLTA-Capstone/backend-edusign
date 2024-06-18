@@ -3,8 +3,18 @@ const {createUser, getUserById} = require('../helpers/userHelper')
 const bcrypt = require('bcrypt');
 
 const registerHandler = async (request, h) => {
-    let hashPassword;
+    if (request.payload === undefined){
+        const response = h.response({
+            status: false,
+            message: `No data found`,
+            data: account
+        });
+        response.code(400);
+        return response;
+    }
     const {username, email, password} = request.payload;
+
+
     const verification = await verifyRegisterInput(username, email, password); 
     if (verification.status !== true){
         const response = h.response({
@@ -15,8 +25,7 @@ const registerHandler = async (request, h) => {
         return response;
     }
 
-    hashPassword = await bcrypt.hash(password, 12);
-
+    const hashPassword = await bcrypt.hash(password, 12);
     const account = await createUser(username, email, hashPassword);
     const response = h.response({
         status: true,
