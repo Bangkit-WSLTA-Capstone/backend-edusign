@@ -24,6 +24,8 @@ CREATE TABLE TRANSLATION_HISTORIES (
 
 CREATE TABLE COURSES (
     id int NOT NULL AUTO_INCREMENT,
+    title varchar(255) NOT NULL,
+    description text NOT NULL,
     coursename varchar(255) NOT NULL,
     filelink varchar(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
