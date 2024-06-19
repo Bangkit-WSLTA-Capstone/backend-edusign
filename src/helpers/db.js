@@ -13,7 +13,7 @@ connection.connect((err) => {
     console.error('Error connecting to the database:', err);
     return;
   }
-  console.log('Connected to the MySQL database');
+  console.log(`Connected to the MySQL database ${process.env.DB_NAME} at ${process.env.DB_HOST} using user ${process.env.DB_USER}`);
 });
 
 module.exports = connection;

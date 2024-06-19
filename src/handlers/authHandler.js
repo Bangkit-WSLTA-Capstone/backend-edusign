@@ -134,14 +134,14 @@ const refreshHandler = async (request, h) => {
         }).code(401);
     }
 
-    if (!request.auth.user){
+    if (!request.auth.credentials.user){
         return h.response({
             status: false,
             message: `Wrong credentials`,
         }).code(401);
     }
 
-    if (!request.auth.user.access){
+    if (!request.auth.credentials.user.type){
         return h.response({
             status: false,
             message: `Wrong credentials`,
@@ -156,6 +156,7 @@ const refreshHandler = async (request, h) => {
         response.code(401);
         return response;
     }
+    
     const userId = request.auth.credentials.user.id;
     const user = await getUserById(userId);
     
