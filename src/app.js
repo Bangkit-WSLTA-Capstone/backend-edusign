@@ -22,7 +22,6 @@ const init = async () => {
             nbf: true,
             exp: true
         },
-        //TODO: Probably refactor and move this somewhere else
         validate: async (artifacts, request, h) => {
             const userId = artifacts.decoded.payload.id;
             const user = await getUserById(userId);
@@ -39,6 +38,17 @@ const init = async () => {
     
     // Server/route options here
     server.realm.modifiers.route.prefix = '/api'
+
+    server.ext('onPreResponse', (request, h) => {
+        const response = request.response;
+
+        if (response.isBoom) {
+            const error = response.output.payload;
+            return h.response({ status: false, message: `An error occurred: ${error.message}` }).code(response.output.statusCode);
+        }
+
+        return h.continue
+    });
 
     // Start server here
     server.route(routes);
