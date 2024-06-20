@@ -11,7 +11,7 @@ This project is created to fulfill the requirements of Bangkit Academy 2024 batc
 - Run `npm install` to install dependency
 - Create `.env` file with the following content
 > JWT_SECRET_KEY  
-> ENVIRONMENT ("Development" if deployed)  
+> ENVIRONMENT ("production" if deployed)  
 > DB_HOST  
 > DB_USER  
 > DB_PASSWORD  
@@ -130,7 +130,7 @@ Response status 400 (Invalid parameter):
 > status: false  
 > message: "Error message"
 ---
-### /refresh/{letter}
+### /dictionary/{letter}
 **Endpoint for fetching letter object reference**  
 Method: GET
 
