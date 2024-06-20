@@ -13,12 +13,16 @@
   "dependencies": {
     "@google-cloud/storage": "^7.11.2",
     "@hapi/hapi": "^21.3.9",
+    "@hapi/inert": "^7.1.0",
     "@hapi/jwt": "^3.2.0",
+    "@hapi/vision": "^7.0.3",
     "axios": "^1.7.2",
     "bcrypt": "^5.1.1",
     "date-fns": "^3.6.0",
     "dateformat": "^5.0.3",
     "dotenv": "^16.4.5",
+    "hapi-swagger": "^17.2.1",
+    "joi": "^17.13.3",
     "mysql": "^2.18.1",
     "nodemon": "^3.1.0"
   }

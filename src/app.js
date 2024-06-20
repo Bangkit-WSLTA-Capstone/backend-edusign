@@ -1,6 +1,9 @@
 const Hapi = require('@hapi/hapi');
 const routes = require('./routes');
 const Jwt  = require('@hapi/jwt');
+const Inert = require('@hapi/inert');
+const Vision = require('@hapi/vision');
+const HapiSwagger = require('hapi-swagger');
 const { getUserById } = require('./helpers/userHelper');
 require('dotenv').config()
 
@@ -35,7 +38,12 @@ const init = async () => {
 
     // Set the strategy
     server.auth.default('my_jwt_strategy');
-    
+
+    // Setup swagger
+    await server.register(Inert);
+    await server.register(Vision);
+    await server.register({plugin: HapiSwagger});
+
     // Server/route options here
     server.realm.modifiers.route.prefix = '/api'
 
